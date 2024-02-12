@@ -1,0 +1,1 @@
+# Confilist Ecosystem local instalacion third apps

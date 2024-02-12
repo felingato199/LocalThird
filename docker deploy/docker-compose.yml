@@ -1,0 +1,49 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:13.4-alpine
+    container_name: confilist_apps_postgres_v13.4
+    volumes:
+      - list_core_pg_data:/var/lib/postgresql/data
+    env_file:
+      - ./configs/Postgresql.env
+    restart: always 
+    ports:
+      - 5432:5432
+  
+  redis:
+    image: redis:alpine
+    restart: always
+
+  mongodb:
+    image: mongo:4.4.28-focal
+    restart: always
+    volumes:
+      - list_core_mongodata:/data/db
+    env_file:
+      - ./configs/Mongo.env
+    ports:
+      - 27017:27017
+    
+  rabbit:
+    restart: always
+    image: rabbitmq
+    ports: 
+      - 5672:5672
+    env_file:
+      - ./configs/Rabbit.env
+  
+  
+volumes:
+  list_core_pg_data:
+    external: true
+    name: list_core_pg_data
+  list_core_mongodata:
+    external: true
+    name: list_core_mongodata
+
+
+networks:
+  default:
+    external: true
+    name: confilist_apps_network
